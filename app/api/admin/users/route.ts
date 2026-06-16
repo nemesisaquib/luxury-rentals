@@ -13,7 +13,7 @@ export async function GET() {
   try {
     return NextResponse.json([
       { id: "admin-id", name: "Demo Admin", email: "admin@hearthandkey.com", role: "ADMIN", createdAt: new Date(), _count: { bookings: 0 } },
-      { id: "user-id", name: "Demo User", email: "demo@hearthandkey.com", role: "USER", createdAt: new Date(), _count: { bookings: 2 } },
+      { id: "user-id", name: "Demo User", email: "demo@hearthandkey.com", role: "GUEST", createdAt: new Date(), _count: { bookings: 2 } },
     ]);
   } catch (error) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export async function POST() {
   try {
     // Bypass Prisma database entirely for the mock demo
-    await setSession("mock-user-id", "USER");
+    await setSession("mock-user-id", "GUEST");
 
     return NextResponse.json({ message: "Demo user logged in successfully" });
   } catch (error: any) {
