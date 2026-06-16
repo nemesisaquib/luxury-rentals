@@ -17,7 +17,7 @@ export const SITE = globalForSite._SITE || {
   tagline: "Stay somewhere worth remembering.",
   description:
     "Hand-picked homes, farmhouses, and coastal retreats — each one visited, vetted, and photographed by our scouts before it earns a key. Book direct, no service fees.",
-  logo: "", 
+  logo: "/logo.png", 
   email: "hello@hearthandkey.com",
   phone: "+1 (555) 123-4567",
   address: "123 Coastal Way, Los Angeles, CA 90001",
