@@ -29,8 +29,8 @@ export async function POST(request: Request) {
         name,
         email,
         password: hashedPassword,
-        // Make the first user an ADMIN automatically for testing, others USER
-        role: (await prisma.user.count()) === 0 ? "ADMIN" : "USER",
+        // Make the first user an ADMIN automatically for testing, others GUEST
+        role: (await prisma.user.count()) === 0 ? "ADMIN" : "GUEST",
       },
     });
 
