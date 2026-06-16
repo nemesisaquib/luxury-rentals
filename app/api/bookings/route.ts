@@ -39,33 +39,33 @@ export async function POST(req: Request) {
       { status: 422 }
     );
 
-  const listing = await prisma.listing.findUnique({
+  const property = await prisma.property.findUnique({
     where: { id: d.listingId },
   });
-  if (!listing)
-    return NextResponse.json({ error: "Listing not found" }, { status: 404 });
+  if (!property)
+    return NextResponse.json({ error: "Property not found" }, { status: 404 });
 
-  if (d.guests > listing.maxGuests)
+  if (d.guests > property.maxGuests)
     return NextResponse.json(
-      { error: `This home sleeps a maximum of ${listing.maxGuests} guests` },
+      { error: `This home sleeps a maximum of ${property.maxGuests} guests` },
       { status: 422 }
     );
 
-  const total = nights * listing.pricePerNight;
+  const totalPrice = nights * property.pricePerNight;
 
   const session = await getSession();
+  if (!session || !session.userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const booking = await prisma.booking.create({
     data: {
-      listingId: listing.id,
-      userId: session?.userId || null,
-      guestName: d.guestName,
-      guestEmail: d.guestEmail,
+      propertyId: property.id,
+      userId: session.userId,
       checkIn,
       checkOut,
       guests: d.guests,
-      nights,
-      total,
+      totalPrice,
     },
   });
 
@@ -73,9 +73,9 @@ export async function POST(req: Request) {
     {
       booking: {
         id: booking.id,
-        title: listing.title,
+        title: property.title,
         nights,
-        total,
+        totalPrice,
         checkIn: d.checkIn,
         checkOut: d.checkOut,
       },

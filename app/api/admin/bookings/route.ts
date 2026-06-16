@@ -15,14 +15,14 @@ export async function GET() {
     return NextResponse.json([
       { 
         id: "1", 
-        listingId: "1", 
+        propertyId: "1", 
         userId: "user1", 
         checkIn: new Date(), 
         checkOut: new Date(Date.now() + 86400000 * 3), 
-        total: 1350, 
+        totalPrice: 1350, 
         status: "CONFIRMED", 
         createdAt: new Date(), 
-        listing: { title: "The Glass House" }, 
+        property: { title: "The Glass House" }, 
         user: { name: "Demo User", email: "demo@hearthandkey.com" } 
       }
     ]);

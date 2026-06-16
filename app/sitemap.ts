@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { SITE } from "@/lib/utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const listings = await prisma.listing.findMany({
+  const properties = await prisma.property.findMany({
     select: { slug: true, createdAt: true },
   });
 
@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/stays`, changeFrequency: "daily", priority: 0.9 },
   ];
 
-  const listingRoutes: MetadataRoute.Sitemap = listings.map((l) => ({
+  const listingRoutes: MetadataRoute.Sitemap = properties.map((l) => ({
     url: `${SITE.url}/stays/${l.slug}`,
     lastModified: l.createdAt,
     changeFrequency: "weekly",
