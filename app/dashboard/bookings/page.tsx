@@ -8,7 +8,7 @@ export default async function UserBookings() {
   
   const bookings = await prisma.booking.findMany({
     where: { userId: session?.userId },
-    include: { listing: true },
+    include: { property: true },
     orderBy: { checkIn: 'desc' }
   });
 
@@ -31,19 +31,19 @@ export default async function UserBookings() {
             <div key={booking.id} className="bg-white/80 backdrop-blur p-6 rounded-3xl shadow-soft border hairline flex gap-8 items-center transition-transform hover:-translate-y-1">
               <div className="relative w-48 h-32 rounded-2xl overflow-hidden shrink-0">
                 <Image
-                  src={booking.listing.heroImage}
-                  alt={booking.listing.title}
+                  src={booking.property.images?.[0] || "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800&q=80"}
+                  alt={booking.property.title}
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="flex-1">
                 <div className="mb-1 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-moss">
-                  {booking.listing.location}, {booking.listing.country}
+                  {booking.property.location}, {booking.property.country}
                 </div>
                 <h3 className="mb-2 font-serif text-xl font-medium tracking-tight">
-                  <Link href={`/stays/${booking.listing.slug}`} className="hover:text-clay transition-colors">
-                    {booking.listing.title}
+                  <Link href={`/stays/${booking.property.slug}`} className="hover:text-clay transition-colors">
+                    {booking.property.title}
                   </Link>
                 </h3>
                 <div className="text-sm text-ink-soft">
@@ -53,8 +53,8 @@ export default async function UserBookings() {
                 </div>
               </div>
               <div className="text-right pr-4">
-                <div className="font-serif text-2xl font-semibold">${booking.total}</div>
-                <div className={`text-xs mt-1 font-semibold uppercase tracking-widest ${booking.status === 'confirmed' ? 'text-moss' : 'text-clay'}`}>
+                <div className="font-serif text-2xl font-semibold">${booking.totalPrice}</div>
+                <div className={`text-xs mt-1 font-semibold uppercase tracking-widest ${booking.status === 'CONFIRMED' ? 'text-moss' : 'text-clay'}`}>
                   {booking.status}
                 </div>
               </div>

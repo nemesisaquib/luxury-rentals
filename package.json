@@ -4,6 +4,7 @@
   "description": "Boutique stay booking platform",
   "scripts": {
     "build": "next build",
+    "postinstall": "prisma generate",
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
     "lint": "next lint",

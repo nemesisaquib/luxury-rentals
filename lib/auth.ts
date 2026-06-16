@@ -23,11 +23,18 @@ export async function verifyToken(input: string) {
   }
 }
 
-export async function getSession() {
+export interface SessionPayload {
+  userId: string;
+  role: string;
+  [key: string]: any;
+}
+
+export async function getSession(): Promise<SessionPayload | null> {
   const cookieStore = await cookies();
   const session = cookieStore.get("session")?.value;
   if (!session) return null;
-  return await verifyToken(session);
+  const payload = await verifyToken(session);
+  return payload as SessionPayload | null;
 }
 
 export async function setSession(userId: string, role: string) {

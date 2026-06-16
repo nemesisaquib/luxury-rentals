@@ -27,23 +27,22 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     // Simplified listing creation
-    const newListing = await prisma.listing.create({
+    const newListing = await prisma.property.create({
       data: {
         title: body.title,
         slug: body.title.toLowerCase().replace(/\s+/g, '-'),
         location: body.location,
         country: "Unknown",
+        lat: 0,
+        lng: 0,
         description: body.description || "",
         pricePerNight: Number(body.price),
-        beds: 1,
-        baths: 1,
+        bedrooms: 1,
+        bathrooms: 1,
         maxGuests: Number(body.maxGuests),
-        category: "City",
-        amenities: "",
-        heroImage: body.imageUrl || "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800&q=80",
-        gallery: "",
-        hostName: "Admin",
-        hostNote: "",
+        amenities: [],
+        images: [body.imageUrl || "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800&q=80"],
+        hostId: session.userId,
       }
     });
     return NextResponse.json(newListing);
