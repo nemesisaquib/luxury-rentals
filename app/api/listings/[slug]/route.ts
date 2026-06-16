@@ -3,12 +3,13 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const listing = await prisma.listing.findUnique({
-    where: { slug: params.slug },
+  const resolvedParams = await params;
+  const property = await prisma.property.findUnique({
+    where: { slug: resolvedParams.slug },
   });
-  if (!listing)
+  if (!property)
     return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json({ listing });
+  return NextResponse.json({ listing: property });
 }
