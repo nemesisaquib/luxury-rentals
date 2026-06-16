@@ -199,12 +199,54 @@ const listings = [
 
 async function main() {
   console.log("Seeding…");
+  
+  // Clear existing data
+  await prisma.review.deleteMany();
+  await prisma.favorite.deleteMany();
   await prisma.booking.deleteMany();
-  await prisma.listing.deleteMany();
+  await prisma.property.deleteMany();
+  await prisma.host.deleteMany();
+  await prisma.user.deleteMany();
+
+  // Create a default host user
+  const user = await prisma.user.create({
+    data: {
+      email: "host@hearthandkey.com",
+      password: "password123", // normally hashed, fine for mock seed
+      name: "Default Host",
+      role: "HOST"
+    }
+  });
+
+  const host = await prisma.host.create({
+    data: {
+      userId: user.id,
+      payoutEmail: "host@hearthandkey.com"
+    }
+  });
+
   for (const l of listings) {
-    await prisma.listing.create({ data: l });
+    const propertyData = {
+      hostId: host.id,
+      title: l.title,
+      slug: l.slug,
+      description: l.description,
+      location: l.location,
+      country: l.country,
+      lat: l.lat,
+      lng: l.lng,
+      pricePerNight: l.pricePerNight,
+      maxGuests: l.maxGuests,
+      bedrooms: l.beds,
+      bathrooms: l.baths,
+      amenities: l.amenities.split(","),
+      images: [l.heroImage, ...l.gallery.split(",")],
+      featured: l.featured,
+      status: "ACTIVE" as any // PropertyStatus.ACTIVE
+    };
+    await prisma.property.create({ data: propertyData });
   }
-  console.log(`Seeded ${listings.length} listings.`);
+  console.log(`Seeded ${listings.length} properties.`);
 }
 
 main()
